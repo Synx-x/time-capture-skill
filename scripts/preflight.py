@@ -62,6 +62,15 @@ def main():
             "fix": "Install https://github.com/neilberkman/ccrider "
                    "(skip if the user only uses Claude Code)",
         })
+    if cfg.get("timesheet", {}).get("fill") == "confirm" and not shutil.which("agent-browser"):
+        missing.append({
+            "id": "browser",
+            "unlocks": "filling the timesheet by clicking and typing",
+            "fix": "Connect a browser tool such as the Claude in Chrome extension, or "
+                   "install agent-browser. Ignore this item when a browser tool is "
+                   "already connected: a script cannot see MCP tools. Without one, "
+                   "the user gets the table and fills it in",
+        })
     missing.extend(_azure_state(cfg))
     print(json.dumps({"ready": not missing, "missing": missing}, indent=2))
 

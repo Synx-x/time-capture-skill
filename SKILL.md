@@ -74,7 +74,11 @@ A false `ready` means the user is new or partly set up. List each `missing` item
 
 - "Automatic setup": run each `fix` and write `config.json` from `config.example.json`. Ask only
   for values that can't be found: jobs, Azure DevOps org, timesheet URL. A step that needs the
-  user, such as the `az login` browser window, pauses the run until it finishes.
+  user, such as the `az login` browser window, pauses the run until it finishes. After the
+  user confirms, rerun `preflight.py` and continue only when that item is gone. The `browser`
+  item is dropped without asking when a browser tool is already connected. After the
+  user confirms, rerun `preflight.py` and continue only when that item is gone. The `browser`
+  item is dropped without asking when a browser tool is already connected.
 - "Guided setup": give one step at a time and wait for each.
 - "Skip": continue with what is available and list once what the run lacks.
 
