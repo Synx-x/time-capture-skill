@@ -93,6 +93,12 @@ path, and `python scripts/_config.py` prints them.
 
 `~` expands to the home folder on every OS, `%USERPROFILE%` on Windows.
 
+## First run
+
+The skill checks for a config, ccrider and a signed-in Azure CLI. Each missing piece is listed
+with what it unlocks. One question follows with three answers: automatic setup, guided setup and
+skip. A skip never blocks a run and leaves only those parts out.
+
 ## Requires
 
 - Python 3.9 or newer.
@@ -111,8 +117,8 @@ gets the table. Set `"fill": "propose"` in the config and nothing is filled.
 ## What's in this repository
 
 - `SKILL.md`: the instructions the agent follows
-- `scripts/`: session extraction, the 15-minute grid, the effort report, the hook trace and its
-  installer, the explore guard, the timesheet and PM snapshots, and `_config.py`, which resolves
+- `scripts/`: session extraction, the 15-minute grid, the effort report, the first-run check
+  (`preflight.py`), the hook trace and its installer, the explore guard, the timesheet and PM snapshots, and `_config.py`, which resolves
   every path
 - `references/`: how each source works, the hook trace setup, the Ark Time Capture form map,
   and the Teams and Outlook search rules

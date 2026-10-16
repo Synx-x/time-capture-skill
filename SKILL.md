@@ -64,6 +64,23 @@ else `~/.config/time-capture`. It holds `config.json` (or `$TIME_CAPTURE_CONFIG`
 `pending/` and the explore flag. `scripts/_config.py` resolves every path. Run
 `python "${CLAUDE_SKILL_DIR}/scripts/_config.py"` to print each one. Shape: `config.example.json`.
 
+### Step 0b: First-run check
+
+The first-run check is `python "${CLAUDE_SKILL_DIR}/scripts/preflight.py"`. It prints `ready`
+and a `missing` list. A true `ready` means Step 1 starts at once.
+
+A false `ready` means the user is new or partly set up. List each `missing` item with its
+`unlocks` text, then make one `AskUserQuestion` call with three options:
+
+- "Automatic setup": run each `fix` and write `config.json` from `config.example.json`. Ask only
+  for values that can't be found: jobs, Azure DevOps org, timesheet URL. A step that needs the
+  user, such as the `az login` browser window, pauses the run until it finishes.
+- "Guided setup": give one step at a time and wait for each.
+- "Skip": continue with what is available and list once what the run lacks.
+
+The question covers items still missing and is asked once per session. A skip never blocks the
+run. Without `AskUserQuestion`, list the items and fixes, then continue.
+
 Commands below call `python`, meaning Python 3.9 or newer. Use `python3` where `python` is
 missing (most macOS and Linux) and `py -3` on Windows without it on PATH.
 `${CLAUDE_SKILL_DIR}` is the folder holding this file, wherever the skill is installed.
