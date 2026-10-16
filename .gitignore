@@ -1,0 +1,15 @@
+# Agent working dirs
+.claude/
+.codex/
+
+# Python build output
+__pycache__/
+*.pyc
+
+# Personal data that lives outside the skill
+config.json
+pending/
+trace/
+
+# Local eval workspaces
+*-workspace/

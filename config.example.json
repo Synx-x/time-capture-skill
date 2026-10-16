@@ -1,0 +1,51 @@
+{
+  "timezone": "+02:00",
+  "workday": {
+    "start": "08:00",
+    "end": "17:00",
+    "expected_hours": 8,
+    "fixed_blocks": [
+      {
+        "label": "Lunch",
+        "span": "12:30-13:00",
+        "category": "Lunch"
+      }
+    ]
+  },
+  "sources": {
+    "sessions": "auto",
+    "ccrider_bin": "ccrider",
+    "ccrider_db": null,
+    "ccrider_sync": true,
+    "providers": null,
+    "claude_projects_root": null,
+    "ignore_prompts": [],
+    "idle_gap_minutes": 15,
+    "trace_dir": null
+  },
+  "work_tracker": {
+    "kind": "azure-devops",
+    "org": "https://dev.azure.com/YourOrg"
+  },
+  "timesheet": {
+    "system": "ark-timecapture",
+    "url": "https://theark.arksoft.co.za/TimeCapture",
+    "fill": "confirm"
+  },
+  "projects": [
+    {
+      "match": [
+        "RepoFolderName"
+      ],
+      "job": "JOBCODE - CLIENT - SLA",
+      "ado_project": "Client Project",
+      "standing_tasks": {
+        "Scrum": null
+      },
+      "support": {
+        "job": "JOBCODE - CLIENT - SUPPORT",
+        "task": null
+      }
+    }
+  ]
+}

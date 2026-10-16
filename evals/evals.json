@@ -1,0 +1,83 @@
+{
+  "skill_name": "time-capture",
+  "evals": [
+    {
+      "id": 0,
+      "name": "today-full-context",
+      "prompt": "Can you put together a timeline of everything I worked on today? Include my Teams messages and emails if you can get at them.",
+      "expected_output": "Terse chronological timeline of today, one line per work item, drawn from agent sessions (claude transcripts plus ccrider for other providers), Teams/Outlook context merged inline where available, coverage gaps stated.",
+      "files": [],
+      "assertions": [
+        "Timeline covers today's local date and presents no other date's work as today's",
+        "Sessions come from extract_sessions.py with the hybrid or jsonl source, so claude subagent and tool-only activity is included",
+        "Entries appear in ascending chronological order",
+        "Uses terse one-line entries (no nested sub-bullets beneath timeline entries)",
+        "Either includes at least one Teams/Outlook-sourced item or states M365 context was unavailable",
+        "Does not present hook-spawned one-shot sessions or tool output as work the user did",
+        "Ends with an explicit statement of coverage gaps or limitations"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "past-day-timesheet",
+      "prompt": "I'm filling in my timesheet and I can't remember what I did yesterday. Can you reconstruct it for me?",
+      "expected_output": "15-minute timesheet table for yesterday with category, job, task, description and billable flag, rows already captured marked as captured, and a Needs your input section.",
+      "files": [],
+      "assertions": [
+        "Table is for yesterday's date, not today's",
+        "Every Start and End sits on a 15-minute boundary",
+        "Jobs are matched against the live timesheet job list, not a hard-coded list",
+        "Rows already in the timesheet are shown as captured and not proposed again",
+        "Unevidenced task IDs are written UNKNOWN rather than guessed",
+        "Ends with a Needs your input section",
+        "Reads Teams, Outlook mail and the calendar for the target day, or states in one line that M365 is not connected",
+        "Puts each ambiguous call to the user as a question with 2 to 4 concrete options, through AskUserQuestion or, without it, listed under Needs your input",
+        "Follows the output template order: summary line, effort, Teams and Outlook context, timesheet table, disputed captured rows, Needs your input, coverage"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "fill-requires-approval",
+      "prompt": "Do my time capture for today.",
+      "expected_output": "Proposed table first, a single explicit approval question, and no Save click before the user answers yes.",
+      "files": [],
+      "assertions": [
+        "Reads the timesheet page read-only before proposing",
+        "Shows the full table and asks once for approval before saving anything",
+        "Does not click Save before an explicit yes in chat",
+        "Holds back rows whose Job or Task is UNKNOWN",
+        "Fills fields with clicks and typing, and uses javascript_tool only to read state"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "week-range",
+      "prompt": "I've got my one-on-one tomorrow morning. Can you summarise what I got done this week so I don't walk in empty handed?",
+      "expected_output": "Multi-day timeline grouped by day with an across-the-week through-line summary, terse one-line entries, open threads surfaced.",
+      "files": [],
+      "assertions": [
+        "Covers at least 3 distinct days rather than only today",
+        "Groups entries under per-day headings",
+        "Includes a short across-the-week summary distinct from the per-day entries",
+        "Surfaces open threads or outstanding commitments",
+        "Uses terse one-line entries"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "effort-today",
+      "prompt": "how much did my agents actually do today? i had a bunch of sessions going at once, break down the effort per session and tell me how parallel i was",
+      "expected_output": "Effort report: agent-hours split into session and subagent hours against wall-clock hours, parallelism, one row per session with busy window and effort, headless sessions marked, numbers taken from the effort script.",
+      "files": [],
+      "assertions": [
+        "Reports agent-hours (or session-hours) and wall-clock hours as two separate totals",
+        "The effort total exceeds the wall-clock total and is not trimmed to fit the workday",
+        "Gives one row per session with its busy window and effort hours",
+        "Reports subagent effort separately from the sessions that spawned them",
+        "States a parallelism figure (session-hours divided by wall clock)",
+        "Numbers come from a script run (effort.py or build_blocks.py), not estimated by hand",
+        "Does not open the timesheet or save anything"
+      ]
+    }
+  ]
+}
