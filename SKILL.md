@@ -136,6 +136,15 @@ Each session carries `provider`, `project_path`, `user_turns` (human prompts onl
 guess from the repo path. What the work was about wins: AWE work done inside the PMCK repo
 belongs to the AWE job.
 
+### Step 1b: Read what is already captured
+
+Before building the grid, read the rows already in the timesheet for the target date. When an
+adapter is configured, run its snapshot (Step 6.1) now and save the rows as `captured.json`.
+Without an adapter, ask the user once which spans are already captured. Every later step skips
+those spans: the grid marks them `CAPTURED`, the table shows them as *captured*, and Step 5b
+never asks about a slot inside one. Overlaps, gaps and task questions apply only to the
+uncaptured slots.
+
 ### Step 2: Build the slot grid
 
 ```bash
@@ -264,7 +273,7 @@ Show the draft first (see "Output template"), then put every open judgement call
 with the `AskUserQuestion` tool. A question in a prompt gets answered. A bullet at the end of a
 long report gets skimmed.
 
-What becomes a question:
+What becomes a question (only for slots outside captured rows, see Step 1b):
 
 - A slot with two plausible jobs or categories: overlapping threads, a meeting during agent work,
   or a request from one client while working on another client's repo.
@@ -301,7 +310,7 @@ For `ark-timecapture`, read `references/timecapture-ark.md` first. It has the fo
 procedure and the traps.
 
 1. **Read before proposing.** Open the timesheet page and run the adapter's snapshot for the
-   date. It returns the captured rows (Step 2's `--existing`), the live job list and the
+   date (Step 1b runs this first). It returns the captured rows (Step 2's `--existing`), the live job list and the
    categories. Read the last two or three captured days too, for the user's habits: description
    voice, categories for support work, standing tasks, unticked Billable. Do this before Step 5,
    so the table already follows those habits.
